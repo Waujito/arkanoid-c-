@@ -1,6 +1,6 @@
 
-#ifndef TERMINAL_H
-#define TERMINAL_H
+#pragma once
+
 #include <ncurses.h>
 #include <cstdint>
 
@@ -41,5 +41,3 @@ public:
 
 	int awaitInput();
 };
-
-#endif

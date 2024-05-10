@@ -1,5 +1,5 @@
-#ifndef BALL_H
-#define BALL_H
+#pragma once
+
 #include "entity.h"
 #include <cmath>
 
@@ -30,5 +30,3 @@ public:
 	void setAngle(double angle);
 	void setVelocity(coords_t velocity);
 };
-
-#endif

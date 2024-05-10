@@ -1,28 +1,26 @@
-# Compilation
-CC=g++
-CC_FLAGS=-Wall -Wextra -Wno-unused-parameter -pedantic -Ofast -std=c++23
+export 
+ROOT_DIR := $(PWD)
+CXX := g++
+CC := gcc
 
-# dirs
-SRC_DIR=src
-BIN_DIR=bin
+CXX_FLAGS := -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -pedantic -Ofast -std=c++23
+CC_FLAGS := -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -pedantic -Ofast -std=c23
 
-SOURCES=$(SRC_DIR)/*.cpp
+SRC_DIR := $(shell realpath src)
+BIN_DIR := $(shell realpath bin)
+LIBS_DIR := $(BIN_DIR)/libs
+OBJ_DIR := $(shell realpath obj)
 
-TARGET=app
+.PHONY: all
+all:
+	@mkdir -p $(BIN_DIR)
+	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(LIBS_DIR)
 
-DEL_FILE	= rm -f
-LIBS_DIRS	= -I./include/
-LIBS		= $(LIBS_DIRS) -lncursesw
+	$(MAKE) -C $(SRC_DIR)/game 
 
 
-.PHONY: clean build
-all: clean build
-
-build: $(SOURCE)
-	$(CC) $(CC_FLAGS) $(LIBS) $(SOURCES) -o $(BIN_DIR)/$(TARGET)
-
-run:
-	./$(BIN_DIR)/$(TARGET)
-
+.PHONY: clean
 clean:
-	$(DEL_FILE) $(BIN_DIR)/*
+	rm -rf $(BIN_DIR)
+	rm -rf $(OBJ_DIR)

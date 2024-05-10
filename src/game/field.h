@@ -1,5 +1,5 @@
-#ifndef FIELD_H
-#define FIELD_H
+#pragma once
+
 #include <vector>
 #include "terminal.h"
 
@@ -28,7 +28,7 @@ enum CollisionSide{
 	RIGHT = 2
 };
 
-class Field: public Terminal {
+class Field {
 private:
 	int **matrix;
 	std::vector<entity_description> registered_entities;
@@ -36,17 +36,31 @@ private:
 
 	void remove_from_screen(int idx);
 	void display_on_screen(int idx);
+
+	Terminal *const term;
+	const size_t width, height;
+
 public:
-	Field();
+	Field(Terminal *term);
 	~Field();
 
-	virtual int init() override;
+	int init();
 
 	entity_description register_entity(collision_callback callback, void *entity);
 	void delete_entity(int idx);
 
 	CollisionSide update_position(int idx, rectangle new_pos);
 	int set_position(int idx, rectangle new_pos);
-};
 
-#endif
+	void refresh();
+
+	size_t getWidth();
+	size_t getMinX();
+	size_t getMaxX();
+
+	size_t getHeight();
+	size_t getMinY();
+	size_t getMaxY();
+
+
+};

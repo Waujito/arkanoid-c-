@@ -1,5 +1,4 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
 
 #include "field.h"
 
@@ -72,4 +71,3 @@ public:
 
 	static void collision_callback(void * e);
 };
-#endif

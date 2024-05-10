@@ -6,22 +6,20 @@
 #include <syslog.h>
 #include <sstream>
 
-Field::Field()
-{}
+Field::Field(Terminal *term): 
+	term(term), 
+	width(term->getWidth()), height(term->getHeight())
+{
+}
 
 Field::~Field()
 {
 	free(this->matrix);
 	this->matrix = NULL;
-	Terminal::~Terminal();
 }
 
 int Field::init()
 {
-	int status = Terminal::init();	
-	if (status) return status;
-	
-
 	this->registered_entities.push_back({});
 
 	int *matarr = (int *)calloc(width*height, sizeof(int));
@@ -184,3 +182,39 @@ CollisionSide Field::update_position(int idx, rectangle new_pos)
 
 	return CollisionSide::NONE;
 }
+
+void Field::refresh()
+{
+	term->refresh();
+}
+
+size_t Field::getWidth() 
+{
+	return this->width;
+}
+size_t Field::getMinX()
+{
+	return term->getMinX();
+}
+
+size_t Field::getMaxX()
+{
+	return term->getMaxX();
+}
+
+
+size_t Field::getHeight()
+{
+	return this->height;
+}
+
+size_t Field::getMinY()
+{
+	return term->getMinY();
+}
+
+size_t Field::getMaxY()
+{
+	return term->getMaxY();
+}
+

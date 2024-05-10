@@ -1,5 +1,4 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once 
 #include "entity.h"
 
 class Player : public Entity {
@@ -7,4 +6,3 @@ public:
 	Player(Field *field);
 };
 
-#endif

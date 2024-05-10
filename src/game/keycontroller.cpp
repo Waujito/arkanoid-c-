@@ -6,13 +6,12 @@ KeyController::KeyController(Terminal *term, Player *player): term(term), player
 {
 }
 
-void KeyController::awaitAction() {
+int KeyController::awaitAction() {
 	int in_char = term->awaitInput();
 	
 	switch(in_char) {
 	case 'q':
-		term->~Terminal();
-		std::exit(0);
+		return 1;
 		break;
 	case KEY_UP:
 	case 'w':
@@ -33,4 +32,6 @@ void KeyController::awaitAction() {
 	default:
 		break;
 	}
+
+	return 0;
 }

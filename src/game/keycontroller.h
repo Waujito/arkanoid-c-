@@ -1,5 +1,4 @@
-#ifndef KEYCONTROLLER_H
-#define KEYCONTROLLER_H
+#pragma once 
 
 #include "player.h"
 #include "terminal.h"
@@ -11,7 +10,5 @@ private:
 public:
 	KeyController(Terminal *term, Player *player);
 
-	void awaitAction();
+	int awaitAction();
 };
-
-#endif
