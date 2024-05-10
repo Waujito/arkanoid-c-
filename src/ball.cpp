@@ -1,30 +1,25 @@
-#include <cmath>
 #include "ball.h"
 #include <syslog.h>
 #include <sstream>
 
-Ball::Ball(Field *field) : Entity(field, (EntityProperties){
+
+
+EntityProperties generateEntityProperties(Field *field, BallProperties props) 
+{
+	EntityProperties defaultProps = {
 		.x=(((coords_t)field->getMaxX() - (coords_t)field->getMinX()) / 2),
 		.y=(((coords_t)field->getMaxY() - (coords_t)field->getMinY()) / 2),
-		.height=2, .width=2
-	})
-{
-	this->velocity = 0.02;
-	this->angle = M_PI/24;
+		.height=2, 
+		.width=2
+	};
+
+	return defaultProps;
 }
 
-Ball::Ball(Field *field, BallProperties props) : Ball(field)
+Ball::Ball(Field *field, BallProperties props) : Entity(field, generateEntityProperties(field, props))
 {
 	this->velocity = props.velocity;
 	this->angle = props.angle;
-	
-	coords_t x = props.x;
-	coords_t y = props.y;
-
-	if (x != -1)
-		set_x(x);
-	if (y != -1)
-		set_y(y);
 }
 
 

@@ -10,7 +10,7 @@ void run(Field *field)
 {
 	
 	Player *player = new Player(field);
-	Ball *ball = new Ball(field);
+	Ball *ball = new Ball(field, {});
 
 	KeyController *controller = new KeyController(field, player);
 

@@ -1,10 +1,11 @@
 #ifndef BALL_H
 #define BALL_H
 #include "entity.h"
+#include <cmath>
 
 struct BallProperties{
-	coords_t velocity = 1;
-	double angle = 0;
+	coords_t velocity = 0.02;
+	double angle = M_PI/24;
 
 	coords_t x = -1;
 	coords_t y = -1;
@@ -18,7 +19,6 @@ private:
 
 	void update_coords(bool force = false);
 public:
-	Ball(Field *field);
 	Ball(Field *field, BallProperties props);
 
 	void refresh(bool force = false);

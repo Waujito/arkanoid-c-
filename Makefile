@@ -1,6 +1,6 @@
 # Compilation
 CC=g++
-CC_FLAGS=-Wall 
+CC_FLAGS=-Wall -Wextra -Wno-unused-parameter -pedantic -Ofast -std=c++23
 
 # dirs
 SRC_DIR=src

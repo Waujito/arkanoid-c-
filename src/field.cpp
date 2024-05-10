@@ -45,9 +45,11 @@ entity_description Field::register_entity(collision_callback callback, void *ent
 {
 	entity_description desc = {
 		.idx = entity_idx++,
+		.position = {},
 		.callback = callback,
-		.entity = entity
+		.entity = entity,
 	};
+
 	registered_entities.push_back(desc);
 
 	return desc;
@@ -146,7 +148,7 @@ CollisionSide Field::update_position(int idx, rectangle new_pos)
 
 	size_t up_col = 0, down_col = 0, left_col = 0, right_col = 0;
 	for (size_t j = xld; j <=xrd; j++) {
-		if (yld - 1 >= 0 && matrix[yld - 1][j] != 0 && matrix[yld - 1][j] != idx)
+		if (yld >= 1 && matrix[yld - 1][j] != 0 && matrix[yld - 1][j] != idx)
 			up_col++;
 
 		if (ylu + 1 < height && matrix[ylu + 1][j] != 0 && matrix[ylu + 1][j] != idx)
@@ -154,7 +156,7 @@ CollisionSide Field::update_position(int idx, rectangle new_pos)
 	}
 
 	for (size_t i = yld; i <=ylu; i++) {
-		if (xld - 1 >= 0 && matrix[i][xld - 1] != 0 && matrix[i][xld - 1] != idx)
+		if (xld >= 1 && matrix[i][xld - 1] != 0 && matrix[i][xld - 1] != idx)
 			left_col++;
 
 		if (xrd + 1 < width && matrix[i][xrd + 1] != 0 && matrix[i][xrd+1] != idx)
