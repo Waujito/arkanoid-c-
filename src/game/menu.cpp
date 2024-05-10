@@ -4,7 +4,9 @@
 #include "field.hpp"
 #include "keycontroller.hpp"
 #include <unistd.h>
-
+extern "C" {
+#include "../lxdialog/dialog.h"
+}
 
 Menu::Menu(Terminal *term): term(term)
 {}

@@ -1,25 +1,24 @@
+#! THANKS LINUX FOR MENUCONFIG :)
+
 PATH_DIFF := $(shell realpath -m --relative-to="$(SRC_DIR)" -- $(CURDIR))
 
 ROBJ_DIR := $(OBJ_DIR)
 OBJ_DIR := $(OBJ_DIR)/$(PATH_DIFF)
 
-APP := $(BIN_DIR)/app
+LIB := $(LIBS_DIR)/lxdialog.a
 
 SRCS := $(shell find . -name '*.c' -type f -printf '%P\n' -o -name '*.cpp' -type f -printf '%P\n')
 OBJS := $(SRCS:%=$(OBJ_DIR)/%.o)
 
-LDFLAGS := -lncurses -L$(LIBS_DIR) -l:lxdialog.a
-
-:
 .PHONY: all prepare
-all: prepare $(APP)
+all: prepare $(LIB)
 
 prepare:
 	@mkdir -p $(OBJ_DIR)
 
-$(APP): $(OBJS)
-	@$(CXX) $(OBJS) $(LIBS_DIR)/lxdialog.a -o $(APP) $(LDFLAGS) 
-	@echo 'LD $(APP)'
+$(LIB): $(OBJS)
+	@echo 'AR $(LIB)'
+	@ar rcs $(LIB) $^
 
 
 $(OBJ_DIR)/%.c.o: %.c
