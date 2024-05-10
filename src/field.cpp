@@ -74,7 +74,7 @@ void Field::remove_from_screen(int idx)
 	rectangle position = registered_entities[idx].position;
 
 	for (size_t i = position.y; i < position.y + position.height; i++) {
-		for (size_t j = position.x; j < position.x + position.height; j++) {
+		for (size_t j = position.x; j < position.x + position.width; j++) {
 			if (matrix[i][j] == idx)
 				mvaddch(i, j, ' ');
 		}
@@ -86,7 +86,7 @@ void Field::display_on_screen(int idx)
 	rectangle position = registered_entities[idx].position;
 
 	for (size_t i = position.y; i < position.y + position.height; i++) {
-		for (size_t j = position.x; j < position.x + position.height; j++) {
+		for (size_t j = position.x; j < position.x + position.width; j++) {
 			if (matrix[i][j] == idx)
 				mvaddch(i, j, '#');
 		}
@@ -103,7 +103,7 @@ int Field::set_position(int idx, rectangle new_pos)
 	remove_from_screen(idx);
 	// Fill old position with zeroes
 	for (size_t i = old_pos.y; i < old_pos.y + old_pos.height; i++) {
-		for (size_t j = old_pos.x; j < old_pos.x + old_pos.height; j++) {
+		for (size_t j = old_pos.x; j < old_pos.x + old_pos.width; j++) {
 			if (matrix[i][j] == idx) matrix[i][j] = 0;
 		}
 	}
@@ -122,7 +122,12 @@ int Field::set_position(int idx, rectangle new_pos)
 		}
 	}
 
+	registered_entities[idx].position = new_pos;
 	display_on_screen(idx);
+
+
+	this->refresh();
+
 
 	return 0;
 }
@@ -131,8 +136,6 @@ CollisionSide Field::update_position(int idx, rectangle new_pos)
 {
 	if (idx == -1) return CollisionSide::NONE;
 	
-	rectangle old_pos = registered_entities[idx].position;
-
 	size_t xld = new_pos.x;
 	size_t yld = new_pos.y;
 
@@ -175,23 +178,7 @@ CollisionSide Field::update_position(int idx, rectangle new_pos)
 		return collision;
 	}
 	
-
-
-	remove_from_screen(idx);
-	for (size_t i = old_pos.y; i < old_pos.y + old_pos.height; i++) {
-		for (size_t j = old_pos.x; j < old_pos.x + old_pos.width; j++) {
-			matrix[i][j] = 0;
-		}
-	}
-
-	for (size_t i = new_pos.y; i < new_pos.y + new_pos.height; i++) {
-		for (size_t j = new_pos.x; j < new_pos.x + new_pos.width; j++) {
-			matrix[i][j] = idx;
-		}
-	}
-
-	registered_entities[idx].position = new_pos;
-	display_on_screen(idx);
+	this->set_position(idx, new_pos);
 
 	return CollisionSide::NONE;
 }

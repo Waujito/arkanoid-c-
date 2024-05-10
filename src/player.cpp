@@ -2,8 +2,8 @@
 
 
 Player::Player(Field *field) : Entity(field, { 
-	.x=1, // (term->getMaxX() - term->getMinX())/2
+	.x=((coords_t)field->getMaxX() - (coords_t)field->getMinX())/2,
 	.y=(coords_t)field->getMaxY() - 1,
-	.yMovable = false, .height = 2, .width = 3})
+	.yMovable = false, .height = 1, .width = 12})
 {
 }

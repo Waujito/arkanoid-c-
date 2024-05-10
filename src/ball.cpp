@@ -6,7 +6,7 @@
 Ball::Ball(Field *field) : Entity(field, (EntityProperties){
 		.x=(((coords_t)field->getMaxX() - (coords_t)field->getMinX()) / 2),
 		.y=(((coords_t)field->getMaxY() - (coords_t)field->getMinY()) / 2),
-		.height=2, .width=3
+		.height=2, .width=2
 	})
 {
 	this->velocity = 0.02;

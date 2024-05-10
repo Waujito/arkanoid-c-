@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <cstdint>
 
+#define size_t uint_fast16_t
 
 class Terminal {
 protected:
