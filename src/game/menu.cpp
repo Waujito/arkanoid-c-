@@ -1,8 +1,8 @@
-#include "menu.h"
-#include "player.h"
-#include "ball.h"
-#include "field.h"
-#include "keycontroller.h"
+#include "menu.hpp"
+#include "player.hpp"
+#include "ball.hpp"
+#include "field.hpp"
+#include "keycontroller.hpp"
 #include <unistd.h>
 
 

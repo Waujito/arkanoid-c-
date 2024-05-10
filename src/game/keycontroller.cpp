@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "keycontroller.h"
+#include "keycontroller.hpp"
 #include <ncurses.h>
 
 KeyController::KeyController(Terminal *term, Player *player): term(term), player(player)

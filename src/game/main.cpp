@@ -1,5 +1,5 @@
-#include "terminal.h"
-#include "menu.h"
+#include "terminal.hpp"
+#include "menu.hpp"
 
 int main() {
 	Terminal *term = new Terminal();

@@ -1,7 +1,7 @@
 #pragma once 
 
-#include "player.h"
-#include "terminal.h"
+#include "player.hpp"
+#include "terminal.hpp"
 
 class KeyController {
 private:

@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "entity.hpp"
 #include <cmath>
 #include <cstring>
 #include <syslog.h>

@@ -11,8 +11,13 @@ BIN_DIR := $(shell realpath bin)
 LIBS_DIR := $(BIN_DIR)/libs
 OBJ_DIR := $(shell realpath obj)
 
-.PHONY: all
-all:
+.PHONY: all 
+all: build 
+
+run: build
+	$(BIN_DIR)/app
+
+build:
 	@mkdir -p $(BIN_DIR)
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(LIBS_DIR)

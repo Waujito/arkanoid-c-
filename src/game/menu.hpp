@@ -1,6 +1,6 @@
 #pragma once
 
-#include "terminal.h"
+#include "terminal.hpp"
 
 class Menu {
 private:

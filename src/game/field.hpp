@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "terminal.h"
+#include "terminal.hpp"
 
 typedef void (*collision_callback)(void *);
 

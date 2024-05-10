@@ -18,7 +18,7 @@ prepare:
 	@mkdir -p $(OBJ_DIR)
 
 $(APP): $(OBJS)
-	$(CXX) $(OBJS) -o $(APP) $(LDFLAGS) 
+	@$(CXX) $(OBJS) -o $(APP) $(LDFLAGS) 
 	@echo 'LD $(APP)'
 
 

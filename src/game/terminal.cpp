@@ -1,4 +1,4 @@
-#include "terminal.h"
+#include "terminal.hpp"
 
 Terminal::Terminal() {}
 
