@@ -8,7 +8,7 @@ APP := $(BIN_DIR)/app
 SRCS := $(shell find . -name '*.c' -type f -printf '%P\n' -o -name '*.cpp' -type f -printf '%P\n')
 OBJS := $(SRCS:%=$(OBJ_DIR)/%.o)
 
-LDFLAGS := -lncurses -L$(LIBS_DIR) -l:lxdialog.a
+LDFLAGS := -lncurses -L$(LIBS_DIR)
 
 :
 .PHONY: all prepare
@@ -18,7 +18,7 @@ prepare:
 	@mkdir -p $(OBJ_DIR)
 
 $(APP): $(OBJS)
-	@$(CXX) $(OBJS) $(LIBS_DIR)/lxdialog.a -o $(APP) $(LDFLAGS) 
+	@$(CXX) $(OBJS) -o $(APP) $(LDFLAGS) 
 	@echo 'LD $(APP)'
 
 

@@ -9,4 +9,5 @@ public:
 	Menu(Terminal *term);
 
 	void run_game();
+	void run();
 };

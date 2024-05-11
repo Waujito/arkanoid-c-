@@ -9,7 +9,8 @@ int main() {
 		return status;
 
 	Menu *menu = new Menu(term);
-	menu->run_game();
+	// menu->run_game();
+	menu->run();
 
 	term->~Terminal();
 	return 0;

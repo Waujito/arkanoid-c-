@@ -22,7 +22,6 @@ build:
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(LIBS_DIR)
 
-	@$(MAKE) -C $(SRC_DIR)/lxdialog 
 	@$(MAKE) -C $(SRC_DIR)/game 
 
 

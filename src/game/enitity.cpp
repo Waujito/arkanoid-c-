@@ -50,7 +50,7 @@ Entity::~Entity()
 
 void Entity::init()
 {
-	this->field_idx = (field->register_entity(this->collision_callback, this)).idx;
+	this->field_idx = (field->register_entity(this->getCollisionCallback(), this)).idx;
 
 	ct_rectangle pos = {x, width, y, height};
 
@@ -142,11 +142,18 @@ vec2i Entity::get_coords()
 	return {x, y};
 }
 
-void Entity::collision_callback(void *e)
+int Entity::getIdx()
 {
-	Entity *entity = (Entity *)e; 
+	return this->field_idx;
+}
 
-	fprintf(stderr, "Collision detected: %d", entity->field_idx);
+collision_callback Entity::getCollisionCallback()
+{
+	return baseCollisionCallback;
+}
+
+void baseCollisionCallback(void *e, entity_description ed)
+{
 }
 
 rectangle ctrecToNorm(ct_rectangle t)

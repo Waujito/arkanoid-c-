@@ -3,9 +3,10 @@
 #include <vector>
 #include "terminal.hpp"
 
-typedef void (*collision_callback)(void *);
+struct entity_description;
+typedef void (*collision_callback)(void *, entity_description);
 
-struct rectangle{
+struct rectangle {
 	size_t x;
 	size_t width = 0;
 
@@ -13,14 +14,14 @@ struct rectangle{
 	size_t height = 0;
 };
 
-struct entity_description{
+struct entity_description {
 	int idx;
 	rectangle position;
 	collision_callback callback;
 	void *entity;
 };
 
-enum CollisionSide{
+enum CollisionSide {
 	DOWN = -2,
 	UP = -1,
 	NONE = 0,

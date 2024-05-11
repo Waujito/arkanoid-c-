@@ -5,6 +5,7 @@
 #include <ncurses.h>
 #include <syslog.h>
 #include <sstream>
+#include <set>
 
 Field::Field(Terminal *term): 
 	term(term), 
@@ -57,14 +58,7 @@ void Field::delete_entity(int idx)
 {
 	if (idx == -1) return;
 
-	entity_description desc = registered_entities[idx];
-	rectangle position = desc.position;
-
-	for (size_t i = position.y; i < position.y + position.height; i++) {
-		for (size_t j = position.x; j < position.x + position.width; j++) {
-			if (matrix[i][j] == idx) matrix[i][j] = 0;
-		}
-	}
+	remove_from_screen(idx);
 
 	registered_entities[idx] = {};
 }
@@ -75,8 +69,10 @@ void Field::remove_from_screen(int idx)
 
 	for (size_t i = position.y; i < position.y + position.height; i++) {
 		for (size_t j = position.x; j < position.x + position.width; j++) {
-			if (matrix[i][j] == idx)
+			if (matrix[i][j] == idx) {
 				mvaddch(i, j, ' ');
+				matrix[i][j] = 0;
+			}
 		}
 	}
 }
@@ -87,8 +83,8 @@ void Field::display_on_screen(int idx)
 
 	for (size_t i = position.y; i < position.y + position.height; i++) {
 		for (size_t j = position.x; j < position.x + position.width; j++) {
-			if (matrix[i][j] == idx)
-				mvaddch(i, j, '#');
+			mvaddch(i, j, '#');
+			matrix[i][j] = idx;
 		}
 	}
 }
@@ -98,15 +94,7 @@ int Field::set_position(int idx, rectangle new_pos)
 {
 	if (idx == -1) return -1;
 
-	rectangle old_pos = registered_entities[idx].position;
-
 	remove_from_screen(idx);
-	// Fill old position with zeroes
-	for (size_t i = old_pos.y; i < old_pos.y + old_pos.height; i++) {
-		for (size_t j = old_pos.x; j < old_pos.x + old_pos.width; j++) {
-			if (matrix[i][j] == idx) matrix[i][j] = 0;
-		}
-	}
 
 	// Check new position to be free
 	for (size_t i = new_pos.y; i < new_pos.y + new_pos.height; i++) {
@@ -116,12 +104,6 @@ int Field::set_position(int idx, rectangle new_pos)
 	}
 
 	// If everything is okey, claim new position
-	for (size_t i = new_pos.y; i < new_pos.y + new_pos.height; i++) {
-		for (size_t j = new_pos.x; j < new_pos.x + new_pos.width; j++) {
-			matrix[i][j] = idx;
-		}
-	}
-
 	registered_entities[idx].position = new_pos;
 	display_on_screen(idx);
 
@@ -145,20 +127,30 @@ CollisionSide Field::update_position(int idx, rectangle new_pos)
 
 
 	size_t up_col = 0, down_col = 0, left_col = 0, right_col = 0;
-	for (size_t j = xld; j <=xrd; j++) {
-		if (yld >= 1 && matrix[yld - 1][j] != 0 && matrix[yld - 1][j] != idx)
-			up_col++;
+	std::set<int> collisionTargets;
 
-		if (ylu + 1 < height && matrix[ylu + 1][j] != 0 && matrix[ylu + 1][j] != idx)
+	for (size_t j = xld; j <=xrd; j++) {
+		if (yld >= 1 && matrix[yld - 1][j] != 0 && matrix[yld - 1][j] != idx) {
+			up_col++;
+			collisionTargets.insert(matrix[yld - 1][j]);
+		}
+
+		if (ylu + 1 < height && matrix[ylu + 1][j] != 0 && matrix[ylu + 1][j] != idx) {
 			down_col++;
+			collisionTargets.insert(matrix[ylu + 1][j]);
+		}
 	}
 
 	for (size_t i = yld; i <=ylu; i++) {
-		if (xld >= 1 && matrix[i][xld - 1] != 0 && matrix[i][xld - 1] != idx)
+		if (xld >= 1 && matrix[i][xld - 1] != 0 && matrix[i][xld - 1] != idx) {
 			left_col++;
+			collisionTargets.insert(matrix[i][xld - 1]);
+		}
 
-		if (xrd + 1 < width && matrix[i][xrd + 1] != 0 && matrix[i][xrd+1] != idx)
+		if (xrd + 1 < width && matrix[i][xrd + 1] != 0 && matrix[i][xrd+1] != idx) {
 			right_col++;
+			collisionTargets.insert(matrix[i][xrd + 1]);
+		}
 	}
 
 	CollisionSide collision = CollisionSide::NONE;
@@ -174,6 +166,15 @@ CollisionSide Field::update_position(int idx, rectangle new_pos)
 		std::stringstream ss;
 		ss << "Collision detected! " << up_col << ' ' << down_col << ' ' << left_col << ' ' << right_col;
 		syslog(LOG_NOTICE, ss.str().c_str());
+
+		entity_description moving_entity = registered_entities[idx];
+		// Report collision to target(s) (for example, bricks)
+		for (const int tidx : collisionTargets) {
+			entity_description e = registered_entities[tidx];
+
+			e.callback(e.entity, moving_entity);
+		}
+		
 
 		return collision;
 	}

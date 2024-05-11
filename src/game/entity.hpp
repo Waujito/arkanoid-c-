@@ -43,6 +43,8 @@ protected:
 	Field *field;
 
 	int field_idx = -1;
+
+	virtual collision_callback getCollisionCallback();
 public:
 	Entity(Field *field, EntityProperties props);
 
@@ -50,6 +52,7 @@ public:
 
 	void init();
 	
+	int getIdx();
 	vec2i get_coords();
 	void set_coords(vec2i coords);
 
@@ -69,5 +72,5 @@ public:
 
 	void refresh();
 
-	static void collision_callback(void * e);
 };
+void baseCollisionCallback(void *e, entity_description actor);
